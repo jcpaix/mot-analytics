@@ -81,8 +81,8 @@ def document_sections(blocks):
             current['blocks'].append(block)
     return [section for section in sections if section['blocks']]
 
-def business_keyword_text(blocks):
-    """Use business overview, products, and R&D prose for company clouds."""
+def business_description_text(blocks):
+    """Use business overview, products, and R&D prose for company business excerpts."""
     paragraphs=[]; include=True
     for block in blocks:
         if block['type']=='heading' and block.get('level')==1:

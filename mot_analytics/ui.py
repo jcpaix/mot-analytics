@@ -1,9 +1,8 @@
 import io
+import math
 import json
 import html
 import re
-import os
-from pathlib import Path
 from datetime import date
 
 import pandas as pd
@@ -11,16 +10,14 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 import numpy as np
-os.environ.setdefault('MPLCONFIGDIR',str(Path(__file__).resolve().parents[1]/'.cache/matplotlib'))
-from wordcloud import WordCloud
 
-from mot_analytics.analysis import KO_STOP, analyze, comparison_terms, cooccurrences, evidence, neighbors, period_shares, representatives, ko_tokens
+from mot_analytics.analysis import analyze, comparison_terms, cooccurrences, evidence, neighbors, period_shares, representatives
 from mot_analytics.arxiv import DEFAULT_QUERY, collect
 from mot_analytics.dart import validate_companies
 from mot_analytics.storage import DATA, read_dataset, utc_now
 from mot_analytics.public_data import OPENALEX_QUERY, collect_openalex
 from mot_analytics.fields import FIELDS
-from mot_analytics.documents import document_sections, business_keyword_text
+from mot_analytics.documents import document_sections, business_description_text
 
 COLORS = ["#167568", "#4875B8", "#D08D32", "#995798", "#C45F65", "#697F41"]
 
@@ -88,7 +85,7 @@ def company_original(row,preview=False,context='profile'):
                 st.dataframe(pd.DataFrame(block['rows'],columns=block['columns']),hide_index=True,width='stretch')
             else:readable_original(block['text'])
     if preview:
-        paragraphs=business_keyword_text(record['blocks']).splitlines()
+        paragraphs=business_description_text(record['blocks']).splitlines()
         own=[text for text in paragraphs if re.search(r'당사|연결회사|연결실체|회사는|회사가',text)]
         for text in (own or paragraphs)[:2]:readable_original(text)
         return
@@ -118,34 +115,6 @@ def collection_record(manifest):
         records=[{'비교 기간':r['period'],'시작일':r['start_date'],'종료일':r['end_date'],'수집 시점':r['collected_at'],'검색 일치 수':r['total_matches'],'분석 표본 수':r['retained'],'수집 상한 적용':bool(r.get('capped'))} for r in manifest['periods']]
         st.dataframe(pd.DataFrame(records),hide_index=True,width='stretch')
     st.caption('수집 시각은 UTC입니다. 원문 식별자와 출처는 데이터 표에서 확인할 수 있습니다.')
-
-
-def keyword_panel(result, label, key, indices=None, extra_excluded=None):
-    names=result.vectorizer.get_feature_names_out()
-    matrix=result.matrix if indices is None else result.matrix[indices]
-    weights=np.asarray(matrix.mean(axis=0)).ravel()
-    documents=np.asarray((matrix>0).sum(axis=0)).ravel()
-    excluded=set('매출액 영업이익 백만원 천원 합계 구분 기준 기말 기초 연결 별도 제회 원 단위 주식 주식회사 당기 전기 전년 있습니다 합니다 대한 위한 통해 경우 내용 기타 같은 따른 관한 하고 있는 되는 것으로 사업의 회사의 당사의'.split())
-    excluded.update(KO_STOP)
-    excluded.update(extra_excluded or [])
-    chosen=[i for i in weights.argsort()[::-1] if ' ' not in names[i] and names[i] not in excluded and not re.match(r'^제?\d',names[i]) and documents[i]>=(1 if matrix.shape[0]==1 else 2)][:45]
-    if not chosen:
-        st.info('여러 문서에 등장하는 유효 단어가 부족합니다.'); return
-    table=pd.DataFrame({'단어':[names[i] for i in chosen],'중요도':[float(weights[i]) for i in chosen],'등장 문서 수':[int(documents[i]) for i in chosen]})
-    st.subheader(label)
-    st.caption('글자가 클수록 선택한 자료의 평균 단어 중요도(TF-IDF)가 높습니다. 조사·연결 표현(따라, 있으며 등), 공시의 반복 표현과 단위 표기를 제외했습니다. 인터넷 전체의 실시간 인기 순위는 아닙니다.')
-    if matrix.shape[0]==1:st.caption('선택 기업의 단어 점수를 사용합니다. 현재 분석 자료의 다른 기업에 비해 이 기업에서 중요하게 쓰인 표현입니다.')
-    font=next((str(p) for p in [Path('C:/Windows/Fonts/malgun.ttf'),Path('/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc'),Path('/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc')] if p.exists()),None)
-    if font or all(not re.search('[가-힣]',name) for name in table['단어']):
-        cloud=WordCloud(font_path=font,width=1200,height=560,background_color='white',colormap='viridis',random_state=42,max_words=45,prefer_horizontal=0.95,relative_scaling=1,max_font_size=160,min_font_size=8,margin=4).generate_from_frequencies(dict(zip(table['단어'],table['중요도'])))
-        image=cloud.to_image(); st.image(image,width='stretch')
-        buffer=io.BytesIO(); image.save(buffer,format='PNG')
-        st.download_button('워드클라우드 이미지 저장',buffer.getvalue(),key+'.png','image/png',key=key+'_download')
-    fig=px.bar(table.head(15).sort_values('중요도'),x='중요도',y='단어',orientation='h',color_discrete_sequence=COLORS)
-    fig.update_layout(height=450,margin=dict(t=15,b=15))
-    st.plotly_chart(fig,width='stretch',key=key+'_bar')
-    with st.expander('단어별 중요도와 등장 문서 수'):
-        st.dataframe(table,hide_index=True,width='stretch')
 
 
 def financial_panel(company_frame):
@@ -273,7 +242,7 @@ def companies_page():
         inventory = frame[["company", "source_url", "report_id", "collected_at", "section"]].rename(columns={"company": "기업", "source_url": "사업보고서 원문", "report_id": "원문 ID", "collected_at": "수집 시점", "section": "분석한 절"})
         st.dataframe(inventory, column_config={"사업보고서 원문": st.column_config.LinkColumn("사업보고서 원문")}, hide_index=True, width="stretch")
         st.caption("분야별 주된 사업과 원문 공개 여부를 기준으로 선정한 기업 표본입니다. 전수조사가 아니며 분야별 기업 수가 다릅니다. 특정 제출본을 고정해 분석하며 최신 정정본 여부는 원문에서 확인하세요.")
-    overview_tab,word_tab,finance_tab,original_tab,map_tab,matrix_tab=st.tabs(['분야별 현황','산업·기업 워드클라우드','매출·영업이익','기업별 주력·전체 원문','전략 지도','기업 간 유사도'])
+    overview_tab,finance_tab,original_tab,map_tab,matrix_tab=st.tabs(['분야별 현황','매출·영업이익','기업별 주력·전체 원문','전략 지도','기업 간 유사도'])
     with overview_tab:
         counts=inventory_all.groupby('sector',sort=False).size().reset_index(name='기업 수').rename(columns={'sector':'분야'})
         st.plotly_chart(px.bar(counts,x='분야',y='기업 수',color='분야',color_discrete_sequence=COLORS),width='stretch',key='sector_counts')
@@ -291,31 +260,6 @@ def companies_page():
             fig=px.imshow(heat,color_continuous_scale='Teal',labels={'x':'단어','y':'분야','color':'평균 중요도'},aspect='auto')
             fig.update_layout(height=360); st.plotly_chart(fig,width='stretch',key='sector_keywords')
             st.caption('같은 단어 점수표로 계산한 분야별 평균입니다. 색이 진할수록 해당 표현을 중요하게 쓰는 기업이 많습니다. 분야별 상위 단어를 함께 표시합니다.')
-    with word_tab:
-        cloud_texts=frame.text.tolist()
-        document_path=DATA/'processed/company_documents.json'
-        if document_path.exists():
-            signature=json.loads(document_path.with_suffix('.manifest.json').read_text(encoding='utf-8'))['sha256']
-            records=document_records(signature)
-            cloud_texts=[business_keyword_text(records[row.report_id]['blocks']) if row.report_id in records and records[row.report_id]['source_url']==row.source_url else row.text for row in frame.itertuples()]
-        cloud_result=cached_analysis(cloud_texts,clusters,'ko',revision='company-cloud-v2')
-        context_words={'반도체':{'반도체','semiconductor','semiconductors'},'IT·플랫폼·게임':{'it'},'자동차·부품':{'자동차','부품'},'바이오·제약':{'바이오','제약'}}
-        common_excluded=set('그룹 법인 자사 연결회사 연결실체 고객사 생산량 판매량 제품의 기업의 반도체의 gb tb mb kb gbps tbps 초당 usd krw 액면금액 당기 전기 반도체사업 반도체산업 전원이 정보가 정보를 전원 정보 남아 끊어지면 지워지는 끊겨도 달러 누계 비용 연구개발비용 감가상각비 회계처리'.split())
-        for name in frame.company:common_excluded.update(ko_tokens(name))
-        st.caption('사업 개요·주요 제품과 서비스·연구개발의 설명 문장을 분석합니다. 제품·연구개발 표 안의 설명 문장도 포함하며, 숫자·재무·위험관리 절은 제외하고, 분야 이름·기업 이름·일반 공시 표현·용량 및 통화 단위를 워드클라우드에서 걸러냅니다. 큰 단어는 이 자료에서 강조한 표현이며 주력 매출의 순위를 뜻하지 않습니다.')
-        industry_tab,enterprise_tab=st.tabs(['산업별 워드클라우드','기업별 워드클라우드'])
-        with industry_tab:
-            word_sector=st.selectbox('워드클라우드 산업 선택',list(dict.fromkeys(frame.sector)),key='word_sector')
-            positions=np.flatnonzero((frame.sector==word_sector).to_numpy())
-            keyword_panel(cloud_result,f'{word_sector} · 제품·기술 핵심 표현','industry_words',positions,common_excluded|context_words.get(word_sector,set()))
-        with enterprise_tab:
-            word_company=st.selectbox('워드클라우드 기업 선택',frame.company.tolist(),key='word_company')
-            word_index=frame.index[frame.company==word_company][0]
-            row=frame.iloc[word_index]
-            keyword_panel(cloud_result,f'{word_company} · 제품·기술 핵심 표현','enterprise_words',[word_index],common_excluded|context_words.get(row.sector,set()))
-            st.link_button(word_company+' 사업보고서 원문',row.source_url)
-            st.subheader(word_company+' · 전체 사업 원문 항목')
-            company_original(row,context='word')
     with finance_tab: financial_panel(frame)
     with original_tab:
         original_company=st.selectbox('주력 사업과 전체 원문을 볼 기업',frame.company.tolist(),key='original_company')
@@ -324,7 +268,7 @@ def companies_page():
         st.subheader(row.company+' · '+row.sector)
         st.caption('2025년 결산 사업보고서 · '+row.section+' · 수집 '+row.collected_at)
         st.link_button(row.company+' 출처 원문',row.source_url)
-        st.write('**주력 사업을 읽는 방법:** 아래 사업 개요에서 제품·서비스와 고객을 먼저 확인하고, 기업별 워드클라우드에서 자주 강조하는 표현을 함께 살펴보세요.')
+        st.write('**주력 사업을 읽는 방법:** 아래 기업 사업 설명에서 제품·서비스와 고객을 확인하고, 전체 원문의 주요 제품·연구개발 항목과 매출·영업이익을 함께 살펴보세요.')
         st.markdown('**기업 사업 설명 · 원문 발췌**')
         company_original(row,preview=True)
         st.subheader(row.company+' · 전체 사업 내용 원문')
@@ -445,12 +389,7 @@ def papers_page():
     st.warning("표본 내 주제 비중입니다. 검색어와 최신순 수집 상한으로 제한한 결과를 전체 연구량 증가나 시장 성장으로 해석할 수 없습니다.")
     if result.silhouette is not None and result.silhouette < 0.05:
         st.warning(f"현재 단어 기준 군집 분리가 약합니다(실루엣 {result.silhouette:.3f}). 뚜렷한 기술 분야나 주제 이동이 발견됐다고 단정하기 어렵습니다. 대표 초록을 읽고 탐색용으로 사용하세요.")
-    word_tab,topic_tab,share_tab,keyword_tab=st.tabs(['최근 핵심 단어','주제 지도','두 기간 비교','키워드 동시 출현'])
-    with word_tab:
-        latest=frame[frame.period==periods[-1]]
-        latest_result=cached_analysis(tuple(latest.title+'. '+latest.abstract),min(4,len(latest)-1),'en') if len(latest)>=4 else result
-        keyword_panel(latest_result,f'{selected_field} · {periods[-1]} 핵심 단어','paper_words_'+dataset_name)
-        st.caption('비교 기간을 동일한 달 범위로 맞춘 기본 자료입니다. 검색 결과의 최신순 제한 표본을 사용합니다.')
+    topic_tab,share_tab,keyword_tab=st.tabs(['주제 지도','두 기간 비교','키워드 동시 출현'])
     with topic_tab:
         draw_map(result, frame.title, "paper_map")
         for label, keywords in result.keywords.items():

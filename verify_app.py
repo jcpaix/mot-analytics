@@ -6,6 +6,7 @@ for function,selector,choices in [('companies_page','company_sector',['전체 �
     for choice in choices:
         at.selectbox(key=selector).select(choice).run(timeout=60)
         assert len(at.exception)==0,[(e.message,e.stack_trace) for e in at.exception]
-        assert len(at.get('imgs')) or len(at.get('image')), 'Word cloud missing'
+        assert not len(at.get('imgs')) and not len(at.get('image')), 'Removed word cloud still visible'
+        assert len(at.get('plotly_chart'))>0, 'Analysis charts missing'
         assert len(at.get('json'))==0,'Code-style metadata visible'
         print(function,choice,[m.value for m in at.metric],flush=True)

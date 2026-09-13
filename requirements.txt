@@ -6,4 +6,3 @@ requests>=2.32,<3
 beautifulsoup4>=4.13,<5
 defusedxml>=0.7,<1
 pytest>=8,<10
-wordcloud>=1.9,<2
