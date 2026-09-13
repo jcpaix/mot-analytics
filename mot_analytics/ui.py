@@ -11,7 +11,7 @@ import plotly.graph_objects as go
 import streamlit as st
 import numpy as np
 
-from mot_analytics.analysis import analyze, comparison_terms, cooccurrences, evidence, neighbors, period_shares, representatives
+from mot_analytics.analysis import analyze, tfidf_features, comparison_terms, cooccurrences, evidence, neighbors, period_shares, representatives
 from mot_analytics.arxiv import DEFAULT_QUERY, collect
 from mot_analytics.dart import validate_companies
 from mot_analytics.storage import DATA, read_dataset, utc_now
@@ -229,13 +229,18 @@ def companies_page():
                 st.warning("업로드에 가상 예시가 포함되어 있습니다. 실제 기업 분석으로 해석하지 마세요.")
             else:
                 st.caption("사용자가 제공한 원문입니다. 출처 진위와 추출 범위를 앱이 확인한 것은 아닙니다.")
-        clusters = st.slider("군집 수", 2, min(6, len(frame) - 1), min(4, len(frame) - 1), key="company_k")
-        result = cached_analysis(tuple(frame.text), clusters, "ko")
+        comparison_sector=selected_sector
+        if selected_sector=="전체 분야":
+            comparison_sector=st.selectbox("유사도·전략지도 비교 분야",list(dict.fromkeys(frame.sector)),key="company_similarity_sector")
+        similarity_frame=frame[frame.sector==comparison_sector].reset_index(drop=True)
+        st.caption(comparison_sector+" 분야 안에서만 유사도·전략지도·기업별 원문 비교를 계산합니다.")
+        clusters = st.slider("군집 수", 2, min(6, len(similarity_frame) - 1), min(4, len(similarity_frame) - 1), key="company_k")
+        result = cached_analysis(tuple(similarity_frame.text), clusters, "ko")
     except (ValueError, pd.errors.ParserError, UnicodeDecodeError) as error:
         st.error(str(error))
         st.stop()
     a, b, c = st.columns(3)
-    a.metric("분석 기업", f"{len(frame)}개")
+    a.metric("유사도 비교 기업", f"{len(similarity_frame)}개")
     b.metric("군집", f"{len(set(result.labels))}개")
     c.metric("사용 방법", "TF-IDF")
     with st.expander("실제 데이터 출처 · 수집 시점 · 사용 범위"):
@@ -245,13 +250,12 @@ def companies_page():
     overview_tab,finance_tab,original_tab,map_tab,matrix_tab=st.tabs(['분야별 현황','매출·영업이익','기업별 주력·전체 원문','전략 지도','기업 간 유사도'])
     with overview_tab:
         counts=inventory_all.groupby('sector',sort=False).size().reset_index(name='기업 수').rename(columns={'sector':'분야'})
-        st.plotly_chart(px.bar(counts,x='분야',y='기업 수',color='분야',color_discrete_sequence=COLORS),width='stretch',key='sector_counts')
-        st.caption('각 분야에서 선정한 기업 수입니다. 분야 전체의 시장 규모를 뜻하지 않습니다.')
         st.dataframe(frame[['sector','company']].rename(columns={'sector':'분야','company':'분석 기업'}),hide_index=True,width='stretch')
         if selected_sector=='전체 분야':
-            names=result.vectorizer.get_feature_names_out()
+            overview_matrix,overview_vectorizer=tfidf_features(tuple(frame.text),"ko")
+            names=overview_vectorizer.get_feature_names_out()
             indices=[i for i,name in enumerate(names) if ' ' not in name]
-            profiles=np.vstack([np.asarray(result.matrix[np.flatnonzero((frame.sector==sector).to_numpy())].mean(axis=0)).ravel() for sector in counts['분야']])
+            profiles=np.vstack([np.asarray(overview_matrix[np.flatnonzero((frame.sector==sector).to_numpy())].mean(axis=0)).ravel() for sector in counts['분야']])
             selected=set()
             for profile in profiles:
                 selected.update(sorted(indices,key=lambda i:profile[i],reverse=True)[:5])
@@ -274,25 +278,27 @@ def companies_page():
         st.subheader(row.company+' · 전체 사업 내용 원문')
         company_original(row)
     with map_tab:
-        draw_map(result, frame.company, "company_map")
+        st.caption(comparison_sector+" · 같은 분야 기업의 사업 설명을 비교한 지도입니다.")
+        draw_map(result, similarity_frame.company, "company_map")
     with matrix_tab:
-        fig = px.imshow(result.similarity, x=frame.company, y=frame.company, zmin=0, zmax=1,
+        st.caption(comparison_sector+" · 같은 분야 기업끼리 비교한 유사도입니다. 분야 안의 문서만으로 단어 중요도와 유사도를 다시 계산합니다.")
+        fig = px.imshow(result.similarity, x=similarity_frame.company, y=similarity_frame.company, zmin=0, zmax=1,
                         color_continuous_scale="Teal", labels={"color": "코사인 유사도"})
         st.plotly_chart(fig, width="stretch")
-    st.subheader("기업별 원문 비교")
-    chosen = st.selectbox("기업 선택", frame.company.tolist())
-    index = frame.index[frame.company == chosen][0]
+    st.subheader(comparison_sector+" · 기업별 원문 비교")
+    chosen = st.selectbox("기업 선택", similarity_frame.company.tolist())
+    index = similarity_frame.index[similarity_frame.company == chosen][0]
     similar = neighbors(result, index)
     cards = st.columns(len(similar))
     for card, (other, score) in zip(cards, similar):
-        card.metric(frame.iloc[other].company, f"{score:.3f}", help="공시 텍스트의 코사인 유사도")
-    other = st.selectbox("비교 기업", [frame.iloc[i].company for i, _ in similar])
-    other_index = frame.index[frame.company == other][0]
+        card.metric(similarity_frame.iloc[other].company, f"{score:.3f}", help="공시 텍스트의 코사인 유사도")
+    other = st.selectbox("비교 기업", [similarity_frame.iloc[i].company for i, _ in similar])
+    other_index = similarity_frame.index[similarity_frame.company == other][0]
     common, distinct_a, distinct_b = comparison_terms(result, index, other_index)
     st.write("**공통 표현** · " + (", ".join(common) or "상위 공통 표현 없음"))
     left, right = st.columns(2)
     for column, row_index, terms in [(left, index, distinct_a), (right, other_index, distinct_b)]:
-        row = frame.iloc[row_index]
+        row = similarity_frame.iloc[row_index]
         with column:
             st.markdown(f"**{row.company}**")
             st.write("상대적으로 높은 표현 · " + (", ".join(terms) or "없음"))
@@ -305,7 +311,7 @@ def companies_page():
     method_note(result, "ko")
     with st.expander("데이터와 수집 기록"):
         collection_record(manifest)
-        export = frame.copy()
+        export = similarity_frame.copy()
         export["cluster"] = result.labels + 1
         csv_download(export, "기업 분석 CSV 다운로드", "company_analysis.csv")
 

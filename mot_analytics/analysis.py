@@ -38,12 +38,8 @@ class Analysis:
     explained_variance: float
 
 
-def analyze(texts, clusters=4, language="en"):
+def tfidf_features(texts, language="en"):
     texts = [normalize(text) for text in texts]
-    if len(texts) < 4:
-        raise ValueError("지도 분석에는 문서가 최소 4개 필요합니다.")
-    if any(len(text) < 30 for text in texts):
-        raise ValueError("각 문서는 분석 가능한 원문 30자 이상이어야 합니다.")
     options = dict(ngram_range=(1, 2), max_features=6000, sublinear_tf=True, min_df=1, max_df=1.0)
     if language == "ko":
         options.update(tokenizer=ko_tokens, token_pattern=None)
@@ -56,6 +52,16 @@ def analyze(texts, clusters=4, language="en"):
         raise ValueError("전처리 후 유효한 단어가 없습니다. 원문과 언어 설정을 확인하세요.") from error
     if matrix.shape[1] < 2 or np.any(np.asarray(matrix.sum(axis=1)).ravel() == 0):
         raise ValueError("일부 문서의 유효 단어가 부족합니다. 더 긴 원문을 입력하세요.")
+    return matrix, vectorizer
+
+
+def analyze(texts, clusters=4, language="en"):
+    texts = [normalize(text) for text in texts]
+    if len(texts) < 4:
+        raise ValueError("지도 분석에는 문서가 최소 4개 필요합니다.")
+    if any(len(text) < 30 for text in texts):
+        raise ValueError("각 문서는 분석 가능한 원문 30자 이상이어야 합니다.")
+    matrix, vectorizer = tfidf_features(texts, language)
     unique = len({tuple(zip(row.indices, row.data)) for row in matrix})
     if unique < 2:
         raise ValueError("모든 문서가 동일합니다. 서로 다른 원문이 필요합니다.")
