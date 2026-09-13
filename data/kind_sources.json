@@ -1,0 +1,125 @@
+[
+  {
+    "company": "SK하이닉스",
+    "alias": "에스케이하이닉스",
+    "url": "https://kind.krx.co.kr/external/2026/03/17/000735/20260317002879/11011.htm",
+    "sector": "반도체"
+  },
+  {
+    "company": "DB하이텍",
+    "url": "https://kind.krx.co.kr/external/2026/03/16/001993/20260316005760/11011.htm",
+    "sector": "반도체"
+  },
+  {
+    "company": "제주반도체",
+    "url": "https://kind.krx.co.kr/external/2026/03/23/001354/20260323006006/11011.htm",
+    "sector": "반도체"
+  },
+  {
+    "company": "텔레칩스",
+    "url": "https://kind.krx.co.kr/external/2026/03/23/001319/20260323005824/11011.htm",
+    "sector": "반도체"
+  },
+  {
+    "company": "어보브반도체",
+    "url": "https://kind.krx.co.kr/external/2026/03/19/000022/20260319000218/11011.htm",
+    "sector": "반도체"
+  },
+  {
+    "company": "넥스트칩",
+    "url": "https://kind.krx.co.kr/external/2026/03/17/000791/20260317003083/11011.htm",
+    "sector": "반도체"
+  },
+  {
+    "company": "가온칩스",
+    "url": "https://kind.krx.co.kr/external/2026/03/19/001715/20260319006993/11011.htm",
+    "sector": "반도체"
+  },
+  {
+    "company": "에이디테크놀로지",
+    "url": "https://kind.krx.co.kr/external/2026/03/20/001996/20260320006989/11011.htm",
+    "sector": "반도체"
+  },
+  {
+    "company": "에이팩트",
+    "url": "https://kind.krx.co.kr/external/2026/03/23/002053/20260323008582/11011.htm",
+    "sector": "반도체"
+  },
+  {
+    "company": "시그네틱스",
+    "url": "https://kind.krx.co.kr/external/2026/03/19/000876/20260319003819/11011.htm",
+    "sector": "반도체"
+  },
+  {
+    "company": "삼성SDS",
+    "alias": "삼성에스디에스",
+    "sector": "IT·플랫폼·게임",
+    "url": "https://kind.krx.co.kr/external/2026/03/10/001757/20260310003888/11011.htm"
+  },
+  {
+    "company": "틸론",
+    "alias": "틸론",
+    "sector": "IT·플랫폼·게임",
+    "url": "https://kind.krx.co.kr/external/2026/03/23/002305/20260323009693/11011.htm"
+  },
+  {
+    "company": "아이티센엔텍",
+    "alias": "아아티센엔텍",
+    "sector": "IT·플랫폼·게임",
+    "url": "https://kind.krx.co.kr/external/2026/03/18/002340/20260318010956/11011.htm"
+  },
+  {
+    "company": "카카오게임즈",
+    "alias": "카카오게임즈",
+    "sector": "IT·플랫폼·게임",
+    "url": "https://kind.krx.co.kr/external/2026/03/18/002425/20260318011299/11011.htm"
+  },
+  {
+    "company": "네오오토",
+    "alias": "네오오토",
+    "sector": "자동차·부품",
+    "url": "https://kind.krx.co.kr/external/2026/03/19/001976/20260319008242/11011.htm"
+  },
+  {
+    "company": "코다코",
+    "alias": "코다코",
+    "sector": "자동차·부품",
+    "url": "https://kind.krx.co.kr/external/2026/03/23/002586/20260323010913/11011.htm"
+  },
+  {
+    "company": "성창오토텍",
+    "alias": "성창오토텍",
+    "sector": "자동차·부품",
+    "url": "https://kind.krx.co.kr/external/2026/03/19/001732/20260319007073/11011.htm"
+  },
+  {
+    "company": "우수AMS",
+    "alias": "우수AMS",
+    "sector": "자동차·부품",
+    "url": "https://kind.krx.co.kr/external/2026/03/11/001591/20260311003829/11011.htm"
+  },
+  {
+    "company": "선바이오",
+    "alias": "선바이오",
+    "sector": "바이오·제약",
+    "url": "https://kind.krx.co.kr/external/2026/03/16/001248/20260316003916/11011.htm"
+  },
+  {
+    "company": "화일약품",
+    "alias": "화일약품",
+    "sector": "바이오·제약",
+    "url": "https://kind.krx.co.kr/external/2026/03/16/001159/20260316003662/11011.htm"
+  },
+  {
+    "company": "삼일제약",
+    "alias": "삼일제약",
+    "sector": "바이오·제약",
+    "url": "https://kind.krx.co.kr/external/2026/03/18/002338/20260318010945/11011.htm"
+  },
+  {
+    "company": "셀트리온제약",
+    "alias": "셀트리온제약",
+    "sector": "바이오·제약",
+    "url": "https://kind.krx.co.kr/external/2026/03/16/002144/20260316006140/11011.htm"
+  }
+]

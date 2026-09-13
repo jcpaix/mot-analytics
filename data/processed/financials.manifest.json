@@ -1,0 +1,10 @@
+{
+  "source": "한국거래소 KIND 사업보고서 / III. 요약재무정보",
+  "fiscal_year": 2025,
+  "currency": "KRW",
+  "extraction": "2-3 year summary tables with verified fiscal cover, descending year/term headers, explicit unit and consolidated/separate context; consolidated table preferred by document order. Missing years remain missing.",
+  "missing_records": [],
+  "limitations": "Rounded summary values; audit qualifications, restatements and continued/discontinued operations follow each filing. No sector-total market-size interpretation.",
+  "rows": 130,
+  "sha256": "67e01846ce17d14e64849497275e87ed80f6b810a3f3e2d54837b6aba92326df"
+}

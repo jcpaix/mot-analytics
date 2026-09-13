@@ -1,0 +1,53 @@
+{
+  "source": "OpenAlex API, arXiv repository records only",
+  "query": "\"autonomous driving\" OR \"vehicle perception\"",
+  "per_period_limit": 60,
+  "periods": [
+    {
+      "collected_at": "2026-09-13T06:46:00.069167+00:00",
+      "request_url": "https://api.openalex.org/works?search=%22autonomous+driving%22+OR+%22vehicle+perception%22&filter=locations.source.id%3AS4306400194%2Cfrom_publication_date%3A2025-01-01%2Cto_publication_date%3A2025-08-31%2Chas_abstract%3Atrue&sort=publication_date%3Adesc&per-page=200",
+      "params": {
+        "search": "\"autonomous driving\" OR \"vehicle perception\"",
+        "filter": "locations.source.id:S4306400194,from_publication_date:2025-01-01,to_publication_date:2025-08-31,has_abstract:true",
+        "sort": "publication_date:desc",
+        "per-page": 200
+      },
+      "raw_sha256": "3072c057681b07fa21a34b22849b766450ef578b697878977fb0652897cf51be",
+      "period": "2025년 1~8월",
+      "start_date": "2025-01-01",
+      "end_date": "2025-08-31",
+      "total_matches": 2638,
+      "returned": 200,
+      "retained": 60,
+      "capped": true
+    },
+    {
+      "collected_at": "2026-09-13T06:46:03.742603+00:00",
+      "request_url": "https://api.openalex.org/works?search=%22autonomous+driving%22+OR+%22vehicle+perception%22&filter=locations.source.id%3AS4306400194%2Cfrom_publication_date%3A2026-01-01%2Cto_publication_date%3A2026-08-31%2Chas_abstract%3Atrue&sort=publication_date%3Adesc&per-page=200",
+      "params": {
+        "search": "\"autonomous driving\" OR \"vehicle perception\"",
+        "filter": "locations.source.id:S4306400194,from_publication_date:2026-01-01,to_publication_date:2026-08-31,has_abstract:true",
+        "sort": "publication_date:desc",
+        "per-page": 200
+      },
+      "raw_sha256": "490c95f7eaa8d90935640c4dd6bf40c63e1746ca5e2873d2fc18ae6c3fdc1e64",
+      "period": "2026년 1~8월",
+      "start_date": "2026-01-01",
+      "end_date": "2026-08-31",
+      "total_matches": 7022,
+      "returned": 200,
+      "retained": 60,
+      "capped": true
+    }
+  ],
+  "is_example": false,
+  "deduplication": "arXiv ID without version suffix; first retained",
+  "sampling": "OpenAlex publication_date descending; first 200 matched records considered, up to 60 with arXiv URL and abstract retained per period",
+  "title_abstract_filter": "",
+  "date_basis": "OpenAlex publication_date, not necessarily first arXiv submission. updated and categories are OpenAlex update/topics.",
+  "preprocessing": "NFKC lowercase, English stopwords, title plus abstract word TF-IDF 1-2 grams",
+  "limitations": "Independent OpenAlex index, incomplete coverage, capped date-sorted search samples; shares do not measure research growth.",
+  "fallback_reason": "Direct arXiv API returned HTTP 429; no further requests made to that API.",
+  "rows": 120,
+  "sha256": "7100e13af4c01c980f74a040a9cc51b7590dd91f7964d5a8ab3a6f01a35d7632"
+}

@@ -1,0 +1,11 @@
+{
+  "collected_at": "2026-09-13T06:46:00.069167+00:00",
+  "request_url": "https://api.openalex.org/works?search=%22autonomous+driving%22+OR+%22vehicle+perception%22&filter=locations.source.id%3AS4306400194%2Cfrom_publication_date%3A2025-01-01%2Cto_publication_date%3A2025-08-31%2Chas_abstract%3Atrue&sort=publication_date%3Adesc&per-page=200",
+  "params": {
+    "search": "\"autonomous driving\" OR \"vehicle perception\"",
+    "filter": "locations.source.id:S4306400194,from_publication_date:2025-01-01,to_publication_date:2025-08-31,has_abstract:true",
+    "sort": "publication_date:desc",
+    "per-page": 200
+  },
+  "raw_sha256": "3072c057681b07fa21a34b22849b766450ef578b697878977fb0652897cf51be"
+}

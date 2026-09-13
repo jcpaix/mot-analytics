@@ -1,0 +1,160 @@
+{
+  "source": "한국거래소 KIND 공개 사업보고서",
+  "fiscal_year": 2025,
+  "is_example": false,
+  "extraction": "HTML heading II. 사업의 내용 through before III. 재무에 관한 사항",
+  "verification": "company identity and fiscal-year end checked against filing cover",
+  "sampling": "Curated listed companies in semiconductor, IT/games, automotive parts, and pharmaceuticals; sector labels based on principal business; fixed filing snapshots, not exhaustive or guaranteed latest corrections",
+  "preprocessing": "NFKC lowercasing, simple Korean/Latin tokens, Korean stopwords, word TF-IDF 1-2 grams",
+  "records": [
+    {
+      "company": "SK하이닉스",
+      "source_url": "https://kind.krx.co.kr/external/2026/03/17/000735/20260317002879/11011.htm",
+      "report_id": "20260317002879",
+      "collected_at": "2026-09-13T06:23:33.678036+00:00",
+      "raw_sha256": "b2b1d2ca82db27faf7e8236c45ceb16bc0428128e7b62c061aeddf5daf6233a6"
+    },
+    {
+      "company": "DB하이텍",
+      "source_url": "https://kind.krx.co.kr/external/2026/03/16/001993/20260316005760/11011.htm",
+      "report_id": "20260316005760",
+      "collected_at": "2026-09-13T06:23:26.255548+00:00",
+      "raw_sha256": "980a51d349e646b2167ac52789f339062f2b143d268d8a6771876f98f95b41ff"
+    },
+    {
+      "company": "제주반도체",
+      "source_url": "https://kind.krx.co.kr/external/2026/03/23/001354/20260323006006/11011.htm",
+      "report_id": "20260323006006",
+      "collected_at": "2026-09-13T06:23:23.327731+00:00",
+      "raw_sha256": "d85ab00d127f9e0c56738d033c263c3e3d6fff2d22f54bc6200a3b2a16dbe114"
+    },
+    {
+      "company": "텔레칩스",
+      "source_url": "https://kind.krx.co.kr/external/2026/03/23/001319/20260323005824/11011.htm",
+      "report_id": "20260323005824",
+      "collected_at": "2026-09-13T06:23:21.461631+00:00",
+      "raw_sha256": "a2004ef8a44e16085448fd76a4be02ac27d5fd823359faed1ffe355c7a91275c"
+    },
+    {
+      "company": "어보브반도체",
+      "source_url": "https://kind.krx.co.kr/external/2026/03/19/000022/20260319000218/11011.htm",
+      "report_id": "20260319000218",
+      "collected_at": "2026-09-13T06:24:49.755164+00:00",
+      "raw_sha256": "1de443f56fecc412f4ed973031569585d74bd98eb698b35c339c3408df447a56"
+    },
+    {
+      "company": "넥스트칩",
+      "source_url": "https://kind.krx.co.kr/external/2026/03/17/000791/20260317003083/11011.htm",
+      "report_id": "20260317003083",
+      "collected_at": "2026-09-13T06:25:31.513660+00:00",
+      "raw_sha256": "d4cfe526e2eda5a37fa658a51376c9a17a0abbc1bb8d5449a42f94dcf14f1a3f"
+    },
+    {
+      "company": "가온칩스",
+      "source_url": "https://kind.krx.co.kr/external/2026/03/19/001715/20260319006993/11011.htm",
+      "report_id": "20260319006993",
+      "collected_at": "2026-09-13T06:26:26.698287+00:00",
+      "raw_sha256": "1a348ba3bc2aa109b7a262bd952d54e97e4a07e6322cadc662656107ca701797"
+    },
+    {
+      "company": "에이디테크놀로지",
+      "source_url": "https://kind.krx.co.kr/external/2026/03/20/001996/20260320006989/11011.htm",
+      "report_id": "20260320006989",
+      "collected_at": "2026-09-13T06:27:08.499508+00:00",
+      "raw_sha256": "51c2962fa53c5a0c19f90d16b2851ea4dbe974d899125e77605afc67bfe052e2"
+    },
+    {
+      "company": "에이팩트",
+      "source_url": "https://kind.krx.co.kr/external/2026/03/23/002053/20260323008582/11011.htm",
+      "report_id": "20260323008582",
+      "collected_at": "2026-09-13T06:31:25.118129+00:00",
+      "raw_sha256": "bb8ef5a6274a5349117643e099337b4ae66b156f6a29c0ab83bf87a157e4fb2f"
+    },
+    {
+      "company": "시그네틱스",
+      "source_url": "https://kind.krx.co.kr/external/2026/03/19/000876/20260319003819/11011.htm",
+      "report_id": "20260319003819",
+      "collected_at": "2026-09-13T06:31:25.119897+00:00",
+      "raw_sha256": "3ef3709514128068b55fe537a2c99bf9bbda5fd2801804432d6bf9615b665c85"
+    },
+    {
+      "source_url": "https://kind.krx.co.kr/external/2026/03/10/001757/20260310003888/11011.htm",
+      "report_id": "20260310003888",
+      "collected_at": "2026-09-13T06:43:56.294552+00:00",
+      "raw_sha256": "1bb0749252ef23cfb3a138473ab18154ada0118ec257e09a49e4d17269224d34"
+    },
+    {
+      "source_url": "https://kind.krx.co.kr/external/2026/03/23/002305/20260323009693/11011.htm",
+      "report_id": "20260323009693",
+      "collected_at": "2026-09-13T06:43:55.356475+00:00",
+      "raw_sha256": "0c0c38eae174f71f2c56cfda6f2ed8481b21f5efe11d8e59403b425d312de5d7"
+    },
+    {
+      "source_url": "https://kind.krx.co.kr/external/2026/03/18/002340/20260318010956/11011.htm",
+      "report_id": "20260318010956",
+      "collected_at": "2026-09-13T06:43:56.100170+00:00",
+      "raw_sha256": "5f93d8388cc2cf8e714a0568f3d96eee9f1dc74889fd95afe590613044651cf0"
+    },
+    {
+      "company": "카카오게임즈",
+      "source_url": "https://kind.krx.co.kr/external/2026/03/18/002425/20260318011299/11011.htm",
+      "report_id": "20260318011299",
+      "collected_at": "2026-09-13T06:45:36.987660+00:00",
+      "raw_sha256": "20e7b1874c687e5141c3f20bbaede3d7756439c5d826c22f4e1d18f1e6be1b27"
+    },
+    {
+      "source_url": "https://kind.krx.co.kr/external/2026/03/19/001976/20260319008242/11011.htm",
+      "report_id": "20260319008242",
+      "collected_at": "2026-09-13T06:43:56.122987+00:00",
+      "raw_sha256": "e1a37d47ed1ffcea1bccc5d1ea3cda1c06e2127e89f6c96a0c32501d9b381e0a"
+    },
+    {
+      "company": "코다코",
+      "source_url": "https://kind.krx.co.kr/external/2026/03/23/002586/20260323010913/11011.htm",
+      "report_id": "20260323010913",
+      "collected_at": "2026-09-13T06:45:37.710090+00:00",
+      "raw_sha256": "d0389189895ee4851cf588155722a36b5f3de0ef23d67c40211ba424294d9fed"
+    },
+    {
+      "company": "성창오토텍",
+      "source_url": "https://kind.krx.co.kr/external/2026/03/19/001732/20260319007073/11011.htm",
+      "report_id": "20260319007073",
+      "collected_at": "2026-09-13T06:45:37.608488+00:00",
+      "raw_sha256": "535f70e5104ea6baa311d118ef3a4092aa85f9b6dc8e14c9466761bf2d15048e"
+    },
+    {
+      "company": "우수AMS",
+      "source_url": "https://kind.krx.co.kr/external/2026/03/11/001591/20260311003829/11011.htm",
+      "report_id": "20260311003829",
+      "collected_at": "2026-09-13T06:45:37.606816+00:00",
+      "raw_sha256": "36a933d88cbb5bc65ae7726e725f1511d2105954575bb5415d767cc05c4b3500"
+    },
+    {
+      "source_url": "https://kind.krx.co.kr/external/2026/03/16/001248/20260316003916/11011.htm",
+      "report_id": "20260316003916",
+      "collected_at": "2026-09-13T06:43:56.660619+00:00",
+      "raw_sha256": "16cfcf50845931d682bcbe27357d2522b29150aba46e9e7fac076f81f8ef9354"
+    },
+    {
+      "source_url": "https://kind.krx.co.kr/external/2026/03/16/001159/20260316003662/11011.htm",
+      "report_id": "20260316003662",
+      "collected_at": "2026-09-13T06:43:56.601074+00:00",
+      "raw_sha256": "95af90fbbe22939c3be68eac4d906249c34cdcee5e6559850bc68b998b256137"
+    },
+    {
+      "source_url": "https://kind.krx.co.kr/external/2026/03/18/002338/20260318010945/11011.htm",
+      "report_id": "20260318010945",
+      "collected_at": "2026-09-13T06:43:57.737519+00:00",
+      "raw_sha256": "d1bceb2f680aafcb239769d80180eeb93c3a8584776cb6ee93a00c0da41eae61"
+    },
+    {
+      "company": "셀트리온제약",
+      "source_url": "https://kind.krx.co.kr/external/2026/03/16/002144/20260316006140/11011.htm",
+      "report_id": "20260316006140",
+      "collected_at": "2026-09-13T06:45:42.198943+00:00",
+      "raw_sha256": "a36048694a51fdfaa07b029d7144351902ed6442a37f7964a1864a14efef32d1"
+    }
+  ],
+  "rows": 22,
+  "sha256": "65d874505e844c316d29358b42d91924d4fb26ae03f49e0872cfbfe9fa2d727d"
+}

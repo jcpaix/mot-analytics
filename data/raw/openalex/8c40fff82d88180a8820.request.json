@@ -1,0 +1,11 @@
+{
+  "collected_at": "2026-09-13T06:45:50.628538+00:00",
+  "request_url": "https://api.openalex.org/works?search=%28accelerator+OR+%22AI+chip%22+OR+%22neural+processing%22%29+AND+%28%22neural+network%22+OR+%22deep+learning%22%29&filter=locations.source.id%3AS4306400194%2Cfrom_publication_date%3A2026-01-01%2Cto_publication_date%3A2026-08-31%2Chas_abstract%3Atrue&sort=publication_date%3Adesc&per-page=200",
+  "params": {
+    "search": "(accelerator OR \"AI chip\" OR \"neural processing\") AND (\"neural network\" OR \"deep learning\")",
+    "filter": "locations.source.id:S4306400194,from_publication_date:2026-01-01,to_publication_date:2026-08-31,has_abstract:true",
+    "sort": "publication_date:desc",
+    "per-page": 200
+  },
+  "raw_sha256": "fd265fa397bf8bbd004f77a0b94d79910c9a1f01b7025532e35f4ec1d4b34ae5"
+}

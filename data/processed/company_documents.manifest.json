@@ -1,0 +1,7 @@
+{
+  "source": "한국거래소 KIND 사업보고서",
+  "documents": 22,
+  "created_at": "2026-09-13T07:29:52.916001+00:00",
+  "sha256": "fffd9172a4ad75ddbd8745b31d14dac52693b02fed084cebe4c22fbaa3389c6e",
+  "extraction": "II. 사업의 내용 only; original headings/paragraphs/table cell text; rowspan and colspan expanded, no financial values inferred"
+}

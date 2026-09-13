@@ -1,0 +1,52 @@
+{
+  "source": "OpenAlex API, arXiv repository records only",
+  "query": "(accelerator OR \"AI chip\" OR \"neural processing\") AND (\"neural network\" OR \"deep learning\")",
+  "per_period_limit": 60,
+  "periods": [
+    {
+      "collected_at": "2026-09-13T06:30:16.631164+00:00",
+      "request_url": "https://api.openalex.org/works?search=%28accelerator+OR+%22AI+chip%22+OR+%22neural+processing%22%29+AND+%28%22neural+network%22+OR+%22deep+learning%22%29&filter=locations.source.id%3AS4306400194%2Cfrom_publication_date%3A2025-01-01%2Cto_publication_date%3A2025-06-30%2Chas_abstract%3Atrue&sort=publication_date%3Adesc&per-page=200",
+      "params": {
+        "search": "(accelerator OR \"AI chip\" OR \"neural processing\") AND (\"neural network\" OR \"deep learning\")",
+        "filter": "locations.source.id:S4306400194,from_publication_date:2025-01-01,to_publication_date:2025-06-30,has_abstract:true",
+        "sort": "publication_date:desc",
+        "per-page": 200
+      },
+      "raw_sha256": "117f69e6fb957e0486f1137bd1223c76adce85dbe2ef84ce8899ec77b0a0f3ae",
+      "period": "2025 상반기",
+      "start_date": "2025-01-01",
+      "end_date": "2025-06-30",
+      "total_matches": 1174,
+      "returned": 200,
+      "retained": 60,
+      "capped": true
+    },
+    {
+      "collected_at": "2026-09-13T06:30:19.741469+00:00",
+      "request_url": "https://api.openalex.org/works?search=%28accelerator+OR+%22AI+chip%22+OR+%22neural+processing%22%29+AND+%28%22neural+network%22+OR+%22deep+learning%22%29&filter=locations.source.id%3AS4306400194%2Cfrom_publication_date%3A2026-01-01%2Cto_publication_date%3A2026-06-30%2Chas_abstract%3Atrue&sort=publication_date%3Adesc&per-page=200",
+      "params": {
+        "search": "(accelerator OR \"AI chip\" OR \"neural processing\") AND (\"neural network\" OR \"deep learning\")",
+        "filter": "locations.source.id:S4306400194,from_publication_date:2026-01-01,to_publication_date:2026-06-30,has_abstract:true",
+        "sort": "publication_date:desc",
+        "per-page": 200
+      },
+      "raw_sha256": "980ad4e569f91081ba0ceb5cde20f8ec5ae1fe9075f984cd76801167531659ca",
+      "period": "2026 상반기",
+      "start_date": "2026-01-01",
+      "end_date": "2026-06-30",
+      "total_matches": 3469,
+      "returned": 200,
+      "retained": 60,
+      "capped": true
+    }
+  ],
+  "is_example": false,
+  "deduplication": "arXiv ID without version suffix; first retained",
+  "sampling": "OpenAlex publication_date descending; first 200 matched records considered, up to 60 with arXiv URL and abstract retained per period",
+  "date_basis": "OpenAlex publication_date, not necessarily first arXiv submission. updated and categories are OpenAlex update/topics.",
+  "preprocessing": "NFKC lowercase, English stopwords, title plus abstract word TF-IDF 1-2 grams",
+  "limitations": "Independent OpenAlex index, incomplete coverage, capped date-sorted search samples; shares do not measure research growth.",
+  "fallback_reason": "Direct arXiv API returned HTTP 429; no further requests made to that API.",
+  "rows": 120,
+  "sha256": "8d2cb566616c18800f2f448bac8bd851ff0a42cf3948679c4baeff51701f3a52"
+}

@@ -1,0 +1,11 @@
+{
+  "collected_at": "2026-09-13T06:45:56.938024+00:00",
+  "request_url": "https://api.openalex.org/works?search=%22large+language+model%22+OR+%22generative+AI%22&filter=locations.source.id%3AS4306400194%2Cfrom_publication_date%3A2026-01-01%2Cto_publication_date%3A2026-08-31%2Chas_abstract%3Atrue&sort=publication_date%3Adesc&per-page=200",
+  "params": {
+    "search": "\"large language model\" OR \"generative AI\"",
+    "filter": "locations.source.id:S4306400194,from_publication_date:2026-01-01,to_publication_date:2026-08-31,has_abstract:true",
+    "sort": "publication_date:desc",
+    "per-page": 200
+  },
+  "raw_sha256": "146f5170e1b3d615d52cd68f76c2c137fca8f56f6cf2a43a22ba0f452f3d4ac4"
+}

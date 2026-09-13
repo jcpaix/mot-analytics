@@ -1,0 +1,11 @@
+{
+  "collected_at": "2026-09-13T06:46:07.361358+00:00",
+  "request_url": "https://api.openalex.org/works?search=%22drug+discovery%22+OR+%22medical+imaging%22&filter=locations.source.id%3AS4306400194%2Cfrom_publication_date%3A2025-01-01%2Cto_publication_date%3A2025-08-31%2Chas_abstract%3Atrue&sort=publication_date%3Adesc&per-page=200",
+  "params": {
+    "search": "\"drug discovery\" OR \"medical imaging\"",
+    "filter": "locations.source.id:S4306400194,from_publication_date:2025-01-01,to_publication_date:2025-08-31,has_abstract:true",
+    "sort": "publication_date:desc",
+    "per-page": 200
+  },
+  "raw_sha256": "1a6d3df69d5c4bda01d3d15f1386db38c8f00bf79789db1f8ab2821684742a6f"
+}
