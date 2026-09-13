@@ -15,7 +15,8 @@ def verify_company_scope(at,sector):
     assert len(matrices)==1,(sector,"Missing within-sector matrix")
     assert set(matrices[0]["y"])==allowed
     assert "분야별 현황" in [tab.label for tab in at.tabs]
-    assert not any(trace.get("type")=="bar" and set(trace.get("x",[]))==set(companies.sector) for chart in charts for trace in chart["data"]), "Company count chart still visible"
+    counts=[trace for chart in charts for trace in chart["data"] if trace.get("type")=="bar" and set(trace.get("y",[]))==set(companies.sector)]
+    assert len(counts)==1, "Analysis company counts missing"
 from mot_analytics.fields import FIELDS
 
 for function,selector,choices in [('companies_page','company_sector',['전체 분야','반도체','IT·플랫폼·게임','자동차·부품','바이오·제약']),('papers_page','paper_field',list(FIELDS))]:

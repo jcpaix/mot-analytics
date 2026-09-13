@@ -10,3 +10,5 @@ data/raw/dart/
 data/raw/kind/
 *.log
 .cache/
+
+.hosting-*.tar.gz

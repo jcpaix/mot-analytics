@@ -1,4 +1,5 @@
 import streamlit as st
+from pathlib import Path
 
 from mot_analytics.ui import companies_page, papers_page
 
@@ -44,9 +45,13 @@ st.markdown("""
 with st.sidebar:
     st.markdown("## ◈ MOT Analytics")
     st.caption("공시와 논문으로 살펴보는 기술 전략")
+def project_guide():
+    st.markdown((Path(__file__).parent / "reports/project_guide.md").read_text(encoding="utf-8"))
+
 page = st.navigation([
     st.Page(companies_page, title="기업 전략 지도", icon=":material/hub:", default=True, url_path="companies"),
     st.Page(papers_page, title="신기술 트렌드 탐색기", icon=":material/science:", url_path="technology"),
+    st.Page(project_guide, title="처음 보는 분을 위한 설명", icon=":material/help:", url_path="guide"),
 ])
 with st.sidebar:
     st.divider()

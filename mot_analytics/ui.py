@@ -239,10 +239,11 @@ def companies_page():
     except (ValueError, pd.errors.ParserError, UnicodeDecodeError) as error:
         st.error(str(error))
         st.stop()
-    a, b, c = st.columns(3)
-    a.metric("유사도 비교 기업", f"{len(similarity_frame)}개")
-    b.metric("군집", f"{len(set(result.labels))}개")
-    c.metric("사용 방법", "TF-IDF")
+    a, b, c, d = st.columns(4)
+    a.metric("분석 기업", f"{len(frame)}개")
+    b.metric("유사도 비교 기업", f"{len(similarity_frame)}개")
+    c.metric("군집", f"{len(set(result.labels))}개")
+    d.metric("사용 방법", "TF-IDF")
     with st.expander("실제 데이터 출처 · 수집 시점 · 사용 범위"):
         inventory = frame[["company", "source_url", "report_id", "collected_at", "section"]].rename(columns={"company": "기업", "source_url": "사업보고서 원문", "report_id": "원문 ID", "collected_at": "수집 시점", "section": "분석한 절"})
         st.dataframe(inventory, column_config={"사업보고서 원문": st.column_config.LinkColumn("사업보고서 원문")}, hide_index=True, width="stretch")
@@ -250,6 +251,13 @@ def companies_page():
     overview_tab,finance_tab,original_tab,map_tab,matrix_tab=st.tabs(['분야별 현황','매출·영업이익','기업별 주력·전체 원문','전략 지도','기업 간 유사도'])
     with overview_tab:
         counts=inventory_all.groupby('sector',sort=False).size().reset_index(name='기업 수').rename(columns={'sector':'분야'})
+        st.subheader('분야별 분석 기업 수')
+        count_chart=px.bar(counts,x='기업 수',y='분야',orientation='h',text='기업 수',color_discrete_sequence=[COLORS[0]])
+        count_chart.update_traces(texttemplate='%{x}개',textposition='outside',cliponaxis=False)
+        count_chart.update_layout(height=260,margin=dict(l=10,r=55,t=15,b=20),xaxis_title='분석 기업 수',yaxis_title=None)
+        count_chart.update_xaxes(range=[0,max(counts['기업 수'])*1.2],dtick=2)
+        st.plotly_chart(count_chart,width='stretch',key='sector_counts')
+        st.caption('현재 수집해 분석한 기업 표본의 수입니다. 산업 전체의 기업 수나 시장 규모를 나타내지 않습니다. 전체 '+str(len(inventory_all))+'개 기업을 분석했습니다.')
         st.dataframe(frame[['sector','company']].rename(columns={'sector':'분야','company':'분석 기업'}),hide_index=True,width='stretch')
         if selected_sector=='전체 분야':
             overview_matrix,overview_vectorizer=tfidf_features(tuple(frame.text),"ko")
