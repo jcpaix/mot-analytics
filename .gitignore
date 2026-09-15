@@ -12,3 +12,10 @@ data/raw/kind/
 .cache/
 
 .hosting-*.tar.gz
+
+.vercel/
+
+.vercel
+.env*
+
+.test-tools/

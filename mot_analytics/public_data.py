@@ -3,6 +3,7 @@ import hashlib
 import json
 import re
 from datetime import date
+from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 
 import pandas as pd
@@ -71,7 +72,7 @@ def restore_abstract(inverted_index):
     return " ".join(positions[p] for p in sorted(positions))
 
 
-def collect_openalex(per_period=60, query=OPENALEX_QUERY, periods=None, hardware_only=True, output_name="papers", field=None):
+def collect_openalex(per_period=60, query=OPENALEX_QUERY, periods=None, hardware_only=True, output_name="papers", field=None, data_dir=None, save=True):
     periods = periods or DEFAULT_PERIODS
     if not 2 <= int(per_period) <= 100 or len(periods) != 2 or not query.strip():
         raise ValueError("검색식, 두 기간, 기간별 상한 2~100개가 필요합니다.")
@@ -80,7 +81,8 @@ def collect_openalex(per_period=60, query=OPENALEX_QUERY, periods=None, hardware
         raise ValueError("날짜 범위와 미래 날짜를 확인하세요.")
     if periods[0][0] == periods[1][0] or max(w[1] for w in windows) <= min(w[2] for w in windows):
         raise ValueError("기간 이름은 달라야 하고 기간은 겹치면 안 됩니다.")
-    raw_dir = DATA / "raw" / "openalex"
+    base_dir = Path(data_dir) if data_dir is not None else DATA
+    raw_dir = base_dir / "raw" / "openalex"
     raw_dir.mkdir(parents=True, exist_ok=True)
     rows, records, seen = [], [], set()
     for name, start, end in periods:
@@ -143,10 +145,11 @@ def collect_openalex(per_period=60, query=OPENALEX_QUERY, periods=None, hardware
                 "date_basis": "OpenAlex publication_date, not necessarily first arXiv submission. updated and categories are OpenAlex update/topics.",
                 "preprocessing": "NFKC lowercase, English stopwords, title plus abstract word TF-IDF 1-2 grams",
                 "limitations": "Independent OpenAlex index, incomplete coverage, capped date-sorted search samples; shares do not measure research growth.",
-                "fallback_reason": "Direct arXiv API returned HTTP 429; no further requests made to that API."}
+                "collection_route": "OpenAlex API selected explicitly"}
     if not re.fullmatch(r"[a-z_]+", output_name):
         raise ValueError("데이터 파일 이름이 유효하지 않습니다.")
-    write_dataset(frame, DATA / "processed" / f"{output_name}.csv", manifest)
+    if save:
+        write_dataset(frame, base_dir / "processed" / f"{output_name}.csv", manifest)
     return frame, manifest
 
 

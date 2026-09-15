@@ -1,0 +1,13 @@
+.git
+.venv
+.pytest_cache
+**/__pycache__
+.openai
+.hosting-*.tar.gz
+CODEX_HANDOFF.md
+data/raw
+requirements-lock.txt
+requirements.txt
+tests
+
+.test-tools/

@@ -2,7 +2,9 @@
 
 실제 공시와 논문으로 산업·기술 분야별 핵심 단어, 기업의 사업 설명, 재무 실적을 살펴보는 Streamlit 앱.
 
-공개 웹: [MOT Analytics](https://jcpaix-mot-analytics.pringring97.chatgpt.site/)
+공개 웹: [MOT Analytics](https://mot-analytics.vercel.app/) · [처음 보는 분을 위한 설명](https://mot-analytics.vercel.app/#guide)
+
+웹 배포: Vercel · 서버 진입점 `server:app` · 로컬 실행 `uvicorn server:app --reload`. 아래 기존 Streamlit 실행도 지원합니다.
 
 ## 데이터
 
@@ -46,4 +48,12 @@ python -m venv .venv
 
 GitHub: https://github.com/jcpaix/mot-analytics
 
-처음 보는 분을 위한 [프로젝트 설명](reports/project_guide.md): 만든 목적, 실제 데이터의 범위, 분석 방법과 결과를 읽는 순서를 설명합니다. 공개 웹은 현재 수집본을 조회하는 화면이며 재수집·CSV 업로드는 로컬 앱에서 실행합니다.
+처음 보는 분을 위한 [프로젝트 설명](reports/project_guide.md): 만든 목적, 실제 데이터의 범위, 분석 방법과 결과를 읽는 순서를 설명합니다. Vercel 공개판에는 자사 기준 성장률·영업이익률·동일 기준 비교, 기술 항목별 논문 비율·초록 근거, CSV 업로드 분석과 요청별 새 논문 수집을 제공합니다. 기본 표본과 새 요청의 데이터는 별도로 처리합니다.
+
+## Vercel 구성과 검증
+
+`pyproject.toml`의 Python 의존성과 `server:app` 진입점을 사용합니다. Vercel 빌드는 `node scripts/build_vercel.cjs`로 화면 파일과 설명을 갱신합니다. 분석 표본을 갱신할 때는 `scripts/build_public.py`를 먼저 실행합니다. 외부 API 결과나 업로드는 요청별 임시 디렉터리와 메모리에서 처리하며 공용 데이터 파일을 바꾸지 않습니다.
+
+`node --test tests/insights.test.cjs`로 손실·전환·중앙값·표본 분모를 검증하고 `python -m pytest tests/test_web_api.py -q`로 실제 업로드 분석과 입력 경계를 검증합니다.
+
+현재 Vercel ZIHAF 팀의 `mot-analytics` 프로젝트에 CLI로 직접 배포합니다. GitHub 자동 연결은 설치 계정의 저장소 접근 권한이 없어 설정되지 않았으므로 GitHub에 푸시하는 것만으로 재배포되지는 않습니다.

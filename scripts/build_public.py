@@ -94,6 +94,6 @@ for field,(name,query,hardware) in FIELDS.items():
 data={'companies':records,'company_manifest':company_manifest,'financials':financials.to_dict('records'),'finance_manifest':finance_manifest,'overview':overview,'comparisons':comparisons,'papers':papers,'guide':guide_html(),'collected_date':'2026-09-13'}
 (OUT/'data.json').write_text(json.dumps(data,ensure_ascii=False,separators=(',',':'),allow_nan=False)+'\n',encoding='utf-8',newline='\n')
 (OUT/'plotly.min.js').write_text(get_plotlyjs(),encoding='utf-8',newline='\n')
-for name in ['index.html','app.js','styles.css']:
+for name in ['index.html','app.js','styles.css','insights.js','insights-ui.js','workspace-ui.js']:
     shutil.copyfile(ROOT/'web'/name,OUT/name)
 print('Public export:',len(records),'companies,',sum(len(v['records']) for v in papers.values()),'field-paper samples,',len(financials),'financial values',flush=True)
